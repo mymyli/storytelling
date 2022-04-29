@@ -3,7 +3,7 @@ import { deepMix } from '@antv/util';
 import Component from '../base/component';
 import Layout from '../base/layout';
 import equal from '../base/equal';
-import { Animation } from '../storytelling';
+import { Animation } from '../story';
 import { px2hd as defaultPx2hd } from '../util';
 import { createUpdater } from '../base/updater';
 import defaultTheme from '../theme';
@@ -47,7 +47,7 @@ function measureText(canvas, px2hd) {
   };
 }
 
-// 顶层Canvas标签
+// 顶层StoryTelling标签
 class Canvas extends Component<ChartProps> {
   canvas: GCanvas;
   container: GCanvas;

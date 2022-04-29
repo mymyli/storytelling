@@ -4,7 +4,7 @@ import { isString, isNil, isFunction } from '@antv/util';
 import { Ref } from '../../types';
 import Chart from '../../chart';
 import { renderShape } from '../../base/diff';
-import { deepClone } from '../../storytelling/util';
+import { deepClone } from '../../story/util';
 
 function isInBBox(bbox, point) {
   const { minX, maxX, minY, maxY } = bbox;

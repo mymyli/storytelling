@@ -1,7 +1,7 @@
 import { jsx } from '../../../jsx';
 import { deepMix, isFunction } from '@antv/util';
 import { Style } from '../../../types';
-import { getAnimationCycleOfJSXElement } from '../../../storytelling';
+import { getAnimationCycleOfJSXElement } from '../../../story';
 
 type TextGuideProps = {
   points?: { x: number; y: number }[] | null;

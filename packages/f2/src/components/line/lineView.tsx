@@ -1,8 +1,8 @@
 import { deepMix, isArray, isFunction } from '@antv/util';
 import { jsx } from '../../jsx';
 import { LineViewProps } from './types';
-import { deepClone } from '../../storytelling/util/util';
-import { getAnimationCycleOfJSXElement } from '../../storytelling';
+import { deepClone } from '../../story/util/util';
+import { getAnimationCycleOfJSXElement } from '../../story';
 
 function concatPoints(children) {
   let result = [];

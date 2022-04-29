@@ -1,6 +1,6 @@
 import { deepMix, isFunction } from '@antv/util';
 import { jsx } from '../../../jsx';
-import { getAnimationCycleOfJSXElement } from '../../../storytelling';
+import { getAnimationCycleOfJSXElement } from '../../../story';
 
 export default (props) => {
   const { records, animation } = props;

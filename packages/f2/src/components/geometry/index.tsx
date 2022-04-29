@@ -6,7 +6,7 @@ import { GeomType, GeometryProps } from './interface';
 import AttrController from '../../controller/attr';
 import equal from '../../base/equal';
 import { AnimationCycle } from '../../canvas/animation/interface';
-import { deepClone } from '../../storytelling/util';
+import { deepClone } from '../../story/util';
 
 // 保留原始数据的字段
 const FIELD_ORIGIN = 'origin';
