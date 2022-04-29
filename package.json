@@ -80,5 +80,8 @@
     "react-monaco-editor": "0.34.0",
     "monaco-editor": "0.20.0",
     "monaco-editor-webpack-plugin": "1.9.1"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npm.alibaba-inc.com"
   }
 }

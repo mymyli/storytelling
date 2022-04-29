@@ -1,5 +1,6 @@
 import { jsx } from '../../jsx';
 import { isNil, deepMix } from '@antv/util';
+import { getAnimationCycleOfJSXElement } from '../../storytelling';
 
 export default (props) => {
   const { records, animation } = props;
@@ -11,6 +12,8 @@ export default (props) => {
           <group key={key}>
             {children.map((item) => {
               const { x, y, size, color, shapeName, shape } = item;
+              const parsedAnimation = getAnimationCycleOfJSXElement(animation, item);
+              // console.log(parsedAnimation);
               if (shapeName === 'rect') {
                 const rectSize = isNil(size) ? shape.size : size;
                 return (
@@ -36,7 +39,7 @@ export default (props) => {
                           property: ['x', 'y', 'width', 'height', 'fill'],
                         },
                       },
-                      animation
+                      parsedAnimation
                     )}
                   />
                 );
@@ -63,7 +66,7 @@ export default (props) => {
                         property: ['x', 'y', 'r', 'fill'],
                       },
                     },
-                    animation
+                    parsedAnimation
                   )}
                 />
               );

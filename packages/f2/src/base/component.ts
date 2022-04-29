@@ -49,6 +49,8 @@ class Component<P = any, S = any> {
   setAnimate(animate: boolean) {
     this.animate = animate;
   }
+
+  getAnimationCycle(animationCycle) {}
 }
 
 // 标识是否是组件

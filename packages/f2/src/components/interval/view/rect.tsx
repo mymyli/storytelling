@@ -1,5 +1,6 @@
-import { deepMix } from '@antv/util';
+import { deepMix, isFunction } from '@antv/util';
 import { jsx } from '../../../jsx';
+import { getAnimationCycleOfJSXElement } from '../../../storytelling';
 
 export default (props) => {
   const { records, animation } = props;
@@ -11,6 +12,11 @@ export default (props) => {
           <group key={key}>
             {children.map((item) => {
               const { key, xMin, xMax, yMin, yMax, color, shape } = item;
+
+              //#region 处理接收的animation
+              const animationCycle = getAnimationCycleOfJSXElement(animation, item);
+              //#endregion
+
               return (
                 <rect
                   key={key}
@@ -39,7 +45,7 @@ export default (props) => {
                         property: ['x', 'y', 'width', 'height'],
                       },
                     },
-                    animation
+                    animationCycle
                   )}
                 />
               );

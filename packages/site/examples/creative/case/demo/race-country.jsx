@@ -1,5 +1,7 @@
 /** @jsx jsx */
 import { jsx, Canvas, Chart, Timeline, Axis, Interval, TextGuide } from '@antv/f2';
+import { processUserOpt, processAnimationTypeCfg } from '@antv/f2';
+import { renderShape } from '@antv/f2';
 
 const context = document.getElementById('container').getContext('2d');
 

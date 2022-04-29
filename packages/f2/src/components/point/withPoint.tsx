@@ -13,7 +13,11 @@ export default (View) => {
       const { props } = this;
       const { coord } = props;
       const records = this.mapping();
-      return <View {...props} coord={coord} records={records} />;
+
+      const { animation } = props;
+      const animationCycle = this.getAnimationCycle(animation);
+
+      return <View {...props} coord={coord} records={records} animation={animationCycle} />;
     }
   };
 };

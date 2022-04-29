@@ -6,6 +6,7 @@ import { GeomType, GeometryProps } from './interface';
 import AttrController from '../../controller/attr';
 import equal from '../../base/equal';
 import { AnimationCycle } from '../../canvas/animation/interface';
+import { deepClone } from '../../storytelling/util';
 
 // 保留原始数据的字段
 const FIELD_ORIGIN = 'origin';
@@ -357,8 +358,8 @@ class Geometry<
 
   /**
    * 数据映射到视图属性核心逻辑
-   * x、y 每个元素走 normalize 然后 convertPoint
-   * color、size、shape
+   *  x、y 每个元素走 normalize 然后 convertPoint
+   *  color、size、shape
    *  如果是Linear，则每个元素 走 mapping
    *  如果是Category/Identity 则第一个元素走 mapping
    */
@@ -569,6 +570,25 @@ class Geometry<
       };
     });
     return items;
+  }
+
+  // 根据传入组件的 animation 计算获得AnimationCycle
+  getAnimationCycle(animationCycle) {
+    if (!animationCycle) {
+      return;
+    }
+
+    const { field: xField } = this.attrs.x.scale;
+    const { data: originData } = this.props; // 在Chart体系中生效，data由Chart传来
+
+    const _animationCycle = deepClone(animationCycle);
+    Object.keys(animationCycle).map((step) => {
+      const animation = _animationCycle[step];
+      if (isFunction(animation)) {
+        _animationCycle[step] = animation()(originData, xField as string);
+      }
+    });
+    return _animationCycle;
   }
 }
 

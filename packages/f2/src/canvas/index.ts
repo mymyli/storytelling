@@ -3,7 +3,7 @@ import { deepMix } from '@antv/util';
 import Component from '../base/component';
 import Layout from '../base/layout';
 import equal from '../base/equal';
-import Animation from './animation';
+import { Animation } from '../storytelling';
 import { px2hd as defaultPx2hd } from '../util';
 import { createUpdater } from '../base/updater';
 import defaultTheme from '../theme';

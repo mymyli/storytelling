@@ -4,6 +4,7 @@ import { isString, isNil, isFunction } from '@antv/util';
 import { Ref } from '../../types';
 import Chart from '../../chart';
 import { renderShape } from '../../base/diff';
+import { deepClone } from '../../storytelling/util';
 
 function isInBBox(bbox, point) {
   const { minX, maxX, minY, maxY } = bbox;
@@ -110,19 +111,40 @@ export default (View) => {
       return theme.guide;
     }
 
+    // 根据传入组件的 animation 计算获得AnimationCycle
+    getAnimationCycle(animationCycle) {
+      if (!animationCycle) {
+        return;
+      }
+
+      const { props } = this;
+      const { chart, data: originData } = props;
+      const xScale = chart.getXScales()[0];
+      const { field: xField } = xScale;
+
+      const _animationCycle = deepClone(animationCycle);
+      Object.keys(animationCycle).map((step) => {
+        const animation = _animationCycle[step];
+        if (isFunction(animation)) {
+          _animationCycle[step] = animation()(originData, xField as string);
+        }
+      });
+      return _animationCycle;
+    }
+
     render() {
       const { props, context } = this;
       const { coord, records = [], animation, chart } = props;
+
       const { width, height } = context;
       const points = this.convertPoints(records);
       const theme = this.getGuideTheme();
       const { guideWidth, guideHeight, guideBBox } = this.state;
 
-      let animationCfg = animation;
-      if (isFunction(animation)) {
-        // 透传绘制关键点和chart实例
-        animationCfg = animation(points, chart);
-      }
+      //#region time Cfg
+      const origin = records[0];
+      const animationCycle = this.getAnimationCycle(animation);
+      //#endregion
 
       return (
         <View
@@ -136,7 +158,7 @@ export default (View) => {
           guideWidth={guideWidth}
           guideHeight={guideHeight}
           guideBBox={guideBBox}
-          animation={animationCfg}
+          animation={animationCycle}
         />
       );
     }

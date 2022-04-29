@@ -1,6 +1,7 @@
 import { jsx } from '../../../jsx';
-import { deepMix } from '@antv/util';
+import { deepMix, isFunction } from '@antv/util';
 import { Style } from '../../../types';
+import { getAnimationCycleOfJSXElement } from '../../../storytelling';
 
 type TextGuideProps = {
   points?: { x: number; y: number }[] | null;
@@ -9,6 +10,7 @@ type TextGuideProps = {
   offsetX?: number;
   offsetY?: number;
   theme?: any;
+  records: any;
 };
 
 export default (props: TextGuideProps, context) => {
@@ -20,6 +22,11 @@ export default (props: TextGuideProps, context) => {
   const offsetYNum = context.px2hd(offsetY);
   const posX = x + (offsetXNum || 0);
   const posY = y + (offsetYNum || 0);
+
+  //#region time Cfg
+  const { records } = props;
+  const animationCycle = getAnimationCycleOfJSXElement(animation, records[0]);
+  //#endregion
 
   return (
     <text
@@ -37,7 +44,7 @@ export default (props: TextGuideProps, context) => {
             property: ['x', 'y'],
           },
         },
-        animation
+        animationCycle
       )}
     />
   );

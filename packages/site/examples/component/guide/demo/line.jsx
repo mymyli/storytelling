@@ -21,6 +21,15 @@ const { props } = (
           { genre: 'max', sold: '50%' },
         ]}
         style={{ stroke: 'red' }}
+        animation={{
+          appear: {
+            duration: 1000,
+            property: ['x2'],
+            start: {
+              x2: 0,
+            },
+          },
+        }}
       />
     </Chart>
   </Canvas>

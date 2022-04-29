@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import { jsx, Canvas, Chart, Interval, Tooltip, Axis } from '@antv/f2';
+import { generateAnimation } from '@antv/f2';
 
 const data = [
   {
@@ -36,6 +37,12 @@ const data = [
   },
 ];
 
+const opt = {
+  delay: [{ field: 'year', start: '1956 年', unit: 500 }],
+  duration: 1000,
+  easing: 'bounceOut',
+};
+
 const context = document.getElementById('container').getContext('2d');
 const { props } = (
   <Canvas context={context} pixelRatio={window.devicePixelRatio}>
@@ -49,7 +56,13 @@ const { props } = (
     >
       <Axis field="year" />
       <Axis field="sales" />
-      <Interval x="year" y="sales" />
+      <Interval
+        x="year"
+        y="sales"
+        animation={{
+          appear: () => generateAnimation(opt),
+        }}
+      />
       <Tooltip />
     </Chart>
   </Canvas>

@@ -1,7 +1,8 @@
 import { jsx } from '../../jsx';
-import { mix, isNil, deepMix } from '@antv/util';
+import { mix, isNil, deepMix, isFunction } from '@antv/util';
 import Geometry from '../geometry';
 import * as LabelViews from './label';
+import _ from 'lodash';
 
 export default (Views) => {
   return class Interval extends Geometry {
@@ -86,7 +87,7 @@ export default (Views) => {
 
     render() {
       const { props, state } = this;
-      const { coord, shape = 'rect', animation, showLabel, labelCfg: customLabelCfg } = props;
+      const { coord, shape = 'rect', showLabel, labelCfg: customLabelCfg, animation } = props;
       const View = Views[shape];
       const LabelView = LabelViews[shape];
       const labelCfg = deepMix(
@@ -97,18 +98,19 @@ export default (Views) => {
         },
         customLabelCfg
       );
-
       if (!View) return null;
       const { selected } = state;
-
       const records = this.mapping();
+
+      const animationCycle = this.getAnimationCycle(animation);
+
       return (
         <View
           coord={coord}
           records={records}
           selected={selected}
           shape={shape}
-          animation={animation}
+          animation={animationCycle}
           showLabel={showLabel}
           labelCfg={labelCfg}
           LabelView={LabelView}

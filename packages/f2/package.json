@@ -1,6 +1,6 @@
 {
-  "name": "@antv/f2",
-  "version": "4.0.14",
+  "name": "@alipay/storytelling",
+  "version": "4.0.18",
   "main": "lib/index.js",
   "module": "es/index.js",
   "unpkg": "dist/index.min.js",
@@ -39,5 +39,8 @@
   },
   "bugs": {
     "url": "https://github.com/antvis/f2/issues"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npm.alibaba-inc.com"
   }
 }

@@ -1,6 +1,8 @@
-import { deepMix, isArray } from '@antv/util';
+import { deepMix, isArray, isFunction } from '@antv/util';
 import { jsx } from '../../jsx';
 import { LineViewProps } from './types';
+import { deepClone } from '../../storytelling/util/util';
+import { getAnimationCycleOfJSXElement } from '../../storytelling';
 
 function concatPoints(children) {
   let result = [];
@@ -75,6 +77,7 @@ export default (props: LineViewProps) => {
 
   const appear = {
     easing: 'linear',
+    delay: 0,
     duration: 450,
     clip: {
       type: 'rect',
@@ -92,10 +95,27 @@ export default (props: LineViewProps) => {
       },
     },
   };
+  const update = {
+    easing: 'linear',
+    duration: 450,
+    property: ['points'],
+  };
+  const defaultAnimationCycle = {
+    appear,
+    update,
+  };
+
   return (
     <group>
       {records.map((record) => {
         const { key, children } = record;
+
+        //#region 差异化配置处理
+        const thisDefaultAnimationCycle = deepClone(defaultAnimationCycle);
+        const thisAnimationCycle = getAnimationCycleOfJSXElement(animation, key);
+        const finalAnimation = deepMix(thisDefaultAnimationCycle, thisAnimationCycle);
+        //#endregion
+
         return (
           <group key={key}>
             {children.map((child) => {
@@ -110,22 +130,16 @@ export default (props: LineViewProps) => {
                     ...shape,
                     lineWidth: size || shape.lineWidth,
                   }}
-                  animation={deepMix(
-                    {
-                      update: {
-                        easing: 'linear',
-                        duration: 450,
-                        property: ['points'],
-                      },
-                      appear,
-                    },
-                    animation
-                  )}
+                  animation={finalAnimation}
                 />
               );
             })}
             {EndView ? (
-              <AnimationEndView record={record} EndView={EndView} appear={appear} />
+              <AnimationEndView
+                record={record}
+                EndView={EndView}
+                appear={finalAnimation['appear']}
+              />
             ) : null}
           </group>
         );

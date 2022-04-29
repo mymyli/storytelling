@@ -1,42 +1,23 @@
 import { jsx } from '../../../jsx';
-import { deepMix } from '@antv/util';
+import { deepMix, isFunction } from '@antv/util';
+import { getAnimationCycleOfJSXElement } from '../../../storytelling';
 
 export default (props) => {
   const { coord, records, animation } = props;
   const { center, startAngle, endAngle, radius } = coord;
   return (
-    <group
-      animation={{
-        appear: {
-          easing: 'quadraticOut',
-          duration: 450,
-          // 特殊处理，appear 的动画设置在整体上
-          ...(animation && animation.appear),
-          clip: {
-            type: 'sector',
-            property: ['endAngle'],
-            attrs: {
-              x: center.x,
-              y: center.y,
-              startAngle,
-              r: radius,
-            },
-            start: {
-              endAngle: startAngle,
-            },
-            end: {
-              endAngle,
-            },
-          },
-        },
-      }}
-    >
+    <group>
       {records.map((record) => {
         const { key, children } = record;
         return (
           <group key={key}>
             {children.map((item) => {
               const { key, xMin, xMax, yMin, yMax, color, shape } = item;
+
+              //#region 处理接收的animation
+              const animationCycle = getAnimationCycleOfJSXElement(animation, item);
+              //#endregion
+
               return (
                 <sector
                   key={key}
@@ -58,7 +39,7 @@ export default (props) => {
                         property: ['x', 'y', 'startAngle', 'endAngle', 'r0', 'r'],
                       },
                     },
-                    animation
+                    animationCycle
                   )}
                 />
               );

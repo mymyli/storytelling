@@ -1,7 +1,7 @@
 // 动画的元素
-import { Animation, EasingFunction, InterpolateFunction } from './interface';
-import interpolate from './interpolate';
-import * as Easing from './easing';
+import { Animation, EasingFunction, InterpolateFunction } from '../../canvas/animation/interface';
+import interpolate from '../../canvas/animation/interpolate';
+import * as Easing from '../../canvas/animation/easing';
 import { ElementStatus } from '../../jsx';
 import { isArray, isString } from '@antv/util';
 
@@ -18,7 +18,7 @@ class Animator {
   easing: EasingFunction;
   duration: number;
   delay: number;
-  property: string[];
+  property: any[];
 
   // property 的差值函数
   interpolates: InterpolateFunction[];
@@ -37,6 +37,10 @@ class Animator {
     const interpolates = property.map((name) => {
       if (isString(name)) {
         return interpolate(start[name], end[name]);
+      }
+      if (isArray(name)) {
+        const attrName = name[0];
+        return interpolate(start[attrName] * 1, end[attrName] * 1);
       }
       // @ts-ignore
       if (name.interpolate) {
@@ -88,6 +92,15 @@ class Animator {
       const name = property[i];
       if (isString(name)) {
         attrs[name] = interpolates[i](t);
+      } else if (isArray(name)) {
+        const attrName = name[0];
+        const digit = name[1] ? name[1] : 0;
+        if (t === 1) {
+          attrs[attrName] = interpolates[i](t);
+        } else {
+          //@ts-ignore
+          attrs[attrName] = interpolates[i](t).toFixed(digit);
+        }
       } else {
         // @ts-ignore
         attrs[name.name] = interpolates[i](t);
